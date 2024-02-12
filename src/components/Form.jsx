@@ -8,7 +8,14 @@ import {useUrlPosition} from "../hooks/useUrlPosition.js";
 import Message from "./Message.jsx";
 import Spinner from "./Spinner.jsx";
 
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import {useCities} from "../context/CitiesContext.jsx";
+import {useNavigate} from "react-router-dom";
+
 const BASE_URL = `https://api.bigdatacloud.net/data/reverse-geocode-client`;
+
 export function convertToEmoji(countryCode) {
     const codePoints = countryCode
         .toUpperCase()
@@ -26,6 +33,8 @@ function Form() {
     const [notes, setNotes] = useState("");
     const [isLoadingGeoCoding, setIsLoadingGeoCoding] = useState(false);
     const [geoCodingError, setGeoCodingError] = useState("");
+    const {createCity, isLoading} = useCities()
+    const navigate = useNavigate();
 
     const [lat, lng] = useUrlPosition();
     const [emoji, setEmoji] = useState("");
@@ -37,9 +46,9 @@ function Form() {
                 setGeoCodingError("")
                 const res = await fetch(`${BASE_URL}?latitude=${lat}&longitude=${lng}`)
                 const data = await res.json();
-                if(!data.countryCode) throw new Error("There is nothing to visit in there 😒")
-                setCityName(data.city || data.locality ||"");
-                setCountry(data.countryName || data.locality ||"");
+                if (!data.countryCode) throw new Error("There is nothing to visit in there 😒")
+                setCityName(data.city || data.locality || "");
+                setCountry(data.countryName || data.locality || "");
                 setEmoji(convertToEmoji(data.countryCode))
             } catch (error) {
                 setGeoCodingError(error.message)
@@ -47,14 +56,29 @@ function Form() {
                 setIsLoadingGeoCoding(false)
             }
         }
+
         fetchCityData()
     }, [lat, lng]);
 
-    if(isLoadingGeoCoding) return <Spinner/>
-    if(geoCodingError) return <Message message={geoCodingError}/>
+    if (isLoadingGeoCoding) return <Spinner/>
+    if (geoCodingError) return <Message message={geoCodingError}/>
+
+    async function handleSubmit(e) {
+        e.preventDefault()
+        if (!cityName || !date) return;
+        const newCity = {
+            cityName,
+            emoji,
+            date,
+            notes,
+            position: {lat, lng}
+        };
+        await createCity(newCity);
+        navigate("/app/cities")
+    }
 
     return (
-        <form className={styles.form}>
+        <form className={`${styles.form} ${isLoading ? styles.loading : ''}`}>
             <div className={styles.row}>
                 <label htmlFor="cityName">City name</label>
                 <input
@@ -62,16 +86,12 @@ function Form() {
                     onChange={(e) => setCityName(e.target.value)}
                     value={cityName}
                 />
-                 <span className={styles.flag}>{emoji}</span>
+                <span className={styles.flag}>{emoji}</span>
             </div>
 
             <div className={styles.row}>
                 <label htmlFor="date">When did you go to {cityName}?</label>
-                <input
-                    id="date"
-                    onChange={(e) => setDate(e.target.value)}
-                    value={date}
-                />
+                <DatePicker id="date" selected={date} onChange={(date) => setDate(date)}/>
             </div>
 
             <div className={styles.row}>
@@ -84,7 +104,7 @@ function Form() {
             </div>
 
             <div className={styles.buttons}>
-                <Button type="primary">Add</Button>
+                <Button type="primary" onClick={(e) => handleSubmit(e)}>Add</Button>
                 <BackButton/>
             </div>
         </form>
