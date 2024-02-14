@@ -35,14 +35,36 @@
       }
     },
     {
-      "id": "acd9",
-      "cityName": "Aldeacentenera",
+      "id": "2874",
+      "cityName": "San Martin de Montalban",
       "emoji": "🇪🇸",
-      "date": "2024-02-12T18:27:07.888Z",
-      "notes": "dd",
+      "date": "2024-02-14T12:39:37.399Z",
+      "notes": "no way",
       "position": {
-        "lat": 39.53793974517628,
-        "lng": -5.625
+        "lat": 39.707186656826565,
+        "lng": -4.416503906250001
+      }
+    },
+    {
+      "id": "12cb",
+      "cityName": "Marrakesh",
+      "emoji": "🇲🇦",
+      "date": "2024-02-14T12:39:49.794Z",
+      "notes": "already visited",
+      "position": {
+        "lat": 31.62532121329918,
+        "lng": -7.948608398437501
+      }
+    },
+    {
+      "id": "e62c",
+      "cityName": "Alcala la Real",
+      "emoji": "🇪🇸",
+      "date": "2024-02-14T12:42:52.986Z",
+      "notes": "ll",
+      "position": {
+        "lat": 37.49229399862877,
+        "lng": -4.042968750000001
       }
     }
   ]
