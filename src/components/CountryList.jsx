@@ -18,6 +18,6 @@ export default function CountryList() {
     }, []);
     return <ul className={styles.countryList}>
         {/* eslint-disable-next-line react/jsx-key */}
-        {countries.map(country => (<CountryItem country={country}/>))}
+        {countries.map((country, index) => (<CountryItem country={country} key={index}/>))}
     </ul>
 }
