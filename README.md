@@ -1,6 +1,6 @@
 # WorldWise App
 
-Welcome to WorldWise, the ultimate companion for wonderers! WorldWise is a React application designed to help users
+Welcome to WorldWise, the ultimate companion for wanderers! WorldWise is a React application designed to help users
 explore and discover places around the world that they wish to visit. With an interactive map and intuitive features,
 WorldWise makes it easy for users to mark and save their dream destinations.
 
